@@ -7,6 +7,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\WarehouseController;
 use App\Http\Controllers\PurchaseOrderController;
+use App\Http\Controllers\OrderItemController;
 
 Route::get('/', function () {
     return view('home');
@@ -40,6 +41,9 @@ Route::apiResource('warehouses', WarehouseController::class);
 
 Route::apiResource('purchase-orders', PurchaseOrderController::class);
 
+
+
+Route::apiResource('order-items', OrderItemController::class);
 
 
 require __DIR__.'/auth.php';
