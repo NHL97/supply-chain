@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\InventoryController;
+use App\Http\Controllers\WarehouseController;
+use App\Http\Controllers\PurchaseOrderController;
 
 Route::get('/', function () {
     return view('home');
@@ -31,6 +33,12 @@ Route::apiResource('products', ProductController::class);
 Route::apiResource('inventories', InventoryController::class);
 
 
+
+Route::apiResource('warehouses', WarehouseController::class);
+
+
+
+Route::apiResource('purchase-orders', PurchaseOrderController::class);
 
 
 
