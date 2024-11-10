@@ -3,6 +3,8 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\InventoryController;
 
 Route::get('/', function () {
     return view('home');
@@ -19,6 +21,16 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::get('/supplier', [SupplierController::class, 'index'])->name('supplier.index');
+
+
+
+Route::apiResource('products', ProductController::class);
+
+
+
+Route::apiResource('inventories', InventoryController::class);
+
+
 
 
 
