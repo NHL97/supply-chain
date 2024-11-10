@@ -12,15 +12,8 @@ class SupplierController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        $suppliers = Supplier::paginate(10);
+        return view('supplier.index', compact('suppliers'));
     }
 
     /**
@@ -28,7 +21,16 @@ class SupplierController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'category' => 'required|string|max:100',
+            'rating' => 'nullable|numeric|min:0|max:5',
+            'contact_info' => 'nullable|json',
+            'industry_specific' => 'nullable|json'
+        ]);
+
+        $supplier = Supplier::create($validated);
+        return response()->json(['message' => 'Supplier created successfully', 'data' => $supplier], 201);
     }
 
     /**
@@ -36,15 +38,8 @@ class SupplierController extends Controller
      */
     public function show(Supplier $supplier)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Supplier $supplier)
-    {
-        //
+        $supplier->load('products', 'purchaseOrders');
+        return response()->json($supplier);
     }
 
     /**
@@ -52,7 +47,16 @@ class SupplierController extends Controller
      */
     public function update(Request $request, Supplier $supplier)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'category' => 'required|string|max:100',
+            'rating' => 'nullable|numeric|min:0|max:5',
+            'contact_info' => 'nullable|json',
+            'industry_specific' => 'nullable|json'
+        ]);
+
+        $supplier->update($validated);
+        return response()->json(['message' => 'Supplier updated successfully', 'data' => $supplier]);
     }
 
     /**
@@ -60,6 +64,12 @@ class SupplierController extends Controller
      */
     public function destroy(Supplier $supplier)
     {
-        //
+        if ($supplier->purchaseOrders()->exists()) {
+            return response()->json(['message' => 'Supplier cannot be deleted because it has active purchase orders.'], 400);
+        }
+
+        $supplier->delete();
+        return response()->json(['message' => 'Supplier deleted successfully']);
     }
 }
+
